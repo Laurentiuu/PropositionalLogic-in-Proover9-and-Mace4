@@ -1,0 +1,167 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Einstein's riddle
+%
+% 1. There are five houses in a row: a,b,c,d 
+%  and e has a dfferent color.
+% 2. In each house lives a person with a different nationality.
+% 3. These five owners drink a certain type of beverage, 
+%  smoke a certain brand of cigar and keep a certain pet.
+% 4. No owners have the same pet, smoke the same brand of 
+%  cigar or drink the same beverage.
+%
+% We know that:
+% the Brit lives in the red house
+% the Swede keeps dogs as pets
+% the Dane drinks tea
+% the green house is on the left of the white house
+% the green house's owner drinks coffee
+% the person who smokes Pall Mall rears birds
+% the owner of the yellow house smokes Dunhill
+% the man living in the center house drinks milk
+% the Norwegian lives in the first house
+% the man who smokes blends lives next to the one who keeps cats
+% the man who keeps horses lives next to the man who smokes Dunhill
+% the owner who smokes BlueMaster drinks beer
+% the German smokes Prince
+% the Norwegian lives next to the blue house
+% the man who smokes blend has a neighbor who drinks water
+% 
+% Who owns the fish?
+%
+% domain size 5: {a,b,c,d,e}.
+
+% constant: a,b,c,d,e
+% predicate: differentFrom(x,y): x e diferit de y
+% predicate: rightneighbor(x,y): y e vecinul drept lui x
+% predicate: leftneighbor(x,y): y e vecinul stang lui x
+% predicate: neighbor(x,y): x si y sunt vecini
+% predicate:  brit(x) | swede(x) | dane(x) | norwegian(x) | german(x)
+%             red(x) | white(x) | yellow(x) | blue(x) | green(x)
+%             dog(x) | bird(x) | cat(x) | horse(x) | fish(x)
+%             tea(x) | coffe(x) | milk(x) | beer(x) | water(x)
+%             pall_mall(x) | dunhill(x) | blueMaster(x) | prince(x) | blend(x)
+
+ differentFrom(a,b).
+ differentFrom(a,c).
+ differentFrom(a,d).
+ differentFrom(a,e).
+ differentFrom(b,c).
+ differentFrom(b,d).
+ differentFrom(b,e).
+ differentFrom(c,d).
+ differentFrom(c,e).
+ differentFrom(d,e).
+
+%relatie de simetrie
+ differentFrom(x,y) ->  differentFrom(y,x).
+
+ rightneighbor(a,b).
+ rightneighbor(b,c).
+ rightneighbor(c,d).
+ rightneighbor(d,e).
+ -rightneighbor(a,a).
+ -rightneighbor(a,c).
+ -rightneighbor(a,d).
+ -rightneighbor(a,e).
+ -rightneighbor(b,a).
+ -rightneighbor(b,b).
+ -rightneighbor(b,d).
+ -rightneighbor(b,e).
+ -rightneighbor(c,a).
+ -rightneighbor(c,b).
+ -rightneighbor(c,c).
+ -rightneighbor(c,e).
+ -rightneighbor(d,a).
+ -rightneighbor(d,b).
+ -rightneighbor(d,c).
+ -rightneighbor(d,d).
+ -rightneighbor(e,a).
+ -rightneighbor(e,b).
+ -rightneighbor(e,c).
+ -rightneighbor(e,d).
+ -rightneighbor(e,e).
+
+ rightneighbor(x,y) | rightneighbor(y,x) <-> neighbor(x,y).
+ rightneighbor(y,x) -> leftneighbor(x,y).
+
+% predicatele fiecarei case
+
+% nationalitatea
+ brit(x) | swede(x) | dane(x) | norwegian(x) | german(x).
+% culoarea
+ red(x) | white(x) | yellow(x) | blue(x) | green(x).
+% animale
+ dog(x) | bird(x) | cat(x) | horse(x) | fish(x).
+% bauturi
+ tea(x) | coffe(x) | milk(x) | beer(x) | water(x).
+% tigari
+ pall_mall(x) | dunhill(x) | blueMaster(x) | prince(x) | blend(x).
+
+% fiecare predicat se aplica unei singure case
+
+ brit(x) & brit(y) -> -differentFrom(x,y).
+ swede(x) & swede(y) -> -differentFrom(x,y).
+ dane(x) & dane(y) -> -differentFrom(x,y).
+ norwegian(x) & norwegian(y) -> -differentFrom(x,y).
+ german(x) & german(y) -> -differentFrom(x,y).
+
+ red(x) & red(y) -> -differentFrom(x,y).
+ white(x) & white(y) -> -differentFrom(x,y).
+ yellow(x) & yellow(y) -> -differentFrom(x,y).
+ blue(x) & blue(y) -> -differentFrom(x,y).
+ green(x) & green(y) -> -differentFrom(x,y).
+
+ dog(x) & dog(y) -> -differentFrom(x,y).
+ bird(x) & bird(y) -> -differentFrom(x,y).
+ cat(x) & cat(y) -> -differentFrom(x,y).
+ horse(x) & horse(y) -> -differentFrom(x,y).
+ fish(x) & fish(y) -> -differentFrom(x,y).
+
+ tea(x) & tea(y) -> -differentFrom(x,y).
+ coffe(x) & coffe(y) -> -differentFrom(x,y).
+ milk(x) & milk(y) -> -differentFrom(x,y).
+ beer(x) & beer(y) -> -differentFrom(x,y).
+ water(x) & water(y) -> -differentFrom(x,y).
+
+ pall_mall(x) & pall_mall(y) -> -differentFrom(x,y).
+ dunhill(x) & dunhill(y) -> -differentFrom(x,y).
+ blueMaster(x) & blueMaster(y) -> -differentFrom(x,y).
+ prince(x) & prince(y) -> -differentFrom(x,y).
+ blend(x) & blend(y) -> -differentFrom(x,y).
+
+% Hint-urile
+ brit(x) <-> red(x).
+ swede(x) <-> dog(x).
+ dane(x) <-> tea(x).
+ white(x) & green(y) -> rightneighbor(y,x). 
+ green(x) <-> coffe(x).
+ pall_mall(x) <-> bird(x).
+ yellow(x) <-> dunhill(x).
+ milk(c).
+ norwegian(a).
+ blend(x) & cat(y) -> neighbor(x,y).
+ horse(x) & dunhill(y) -> neighbor(x,y).
+ blueMaster(x) <-> beer(x).
+ german(x) <-> prince(x).
+ norwegian(x) & blue(y) -> neighbor(x,y).
+ blend(x) & water(y) -> neighbor(x,y).
+
+end_of_list.
+
+formulas(goals).
+
+end_of_list.
+

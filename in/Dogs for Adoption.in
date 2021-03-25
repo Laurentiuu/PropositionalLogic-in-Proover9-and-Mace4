@@ -1,0 +1,182 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Dogs for Adoption
+%
+% Five men are side by side at a pet store where 
+% there is an adoption event. Each man is adopting a dog. 
+% Figure out the names and the breeds of the dogs and the 
+% information about their owner.
+%
+% We know that:
+% The man adopting the Rottweiler is at the first position.
+% the Nurse is next to the one who likes Hiking.
+% the man who likes Jogging is at one of the ends.
+% the guy adopting the Dachshund is exactly to the right of the man wearing the Yellow shirt.
+% the one adopting Rex is at the fourth position.
+% the Waiter is somewhere between the man wearing the Black shirt and the Painter, in that order.
+% rex is being adopted by Kevin.
+% the one who likes Reading is next to the one who is adopting the Dachshund.
+% ryan is adopting the Poodle.
+% the man who likes Drawing is somewhere between the man who likes Cooking and the one who likes Reading, in that order.
+% the man adopting the Beagle is at one of the ends.
+% at the fourth position is the man who likes Hiking.
+% bob is an Actor.
+% the one adopting Apollo is at the fifth position.
+% the man adopting the Chihuahua is next to the man adopting the Dachshund.
+% the guy wearing the Blue shirt is at the fourth position.
+% hank is adopting Spike.
+% the man wearing the Red shirt is next to the man who is adopting the Dachshund.
+% the guy wearing the White shirt is somewhere between the one adopting Luke and the one who likes Jogging, in that order.
+% the Designer is wearing the White shirt.
+%
+% domain size 5: {a,b,c,d,e}.
+
+% constant: a,b,c,d,e
+% predicate: differentFrom(x,y): x e diferit de y
+% predicate: rightneighbor(x,y): y e vecinul drept lui x
+% predicate: leftneighbor(x,y): y e vecinul stang lui x
+% predicate: neighbor(x,y): x si y sunt vecini
+% predicate: between(x,y,z): y se afla intre x si z
+% predicate: black(x) | white(x) | yellow(x) | blue(x) | red(x)
+%            bob(x) | dylan(x) | hank(x) | kevin(x) | ryan(x)
+%            apollo(x) | jake(x) | luke(x) | rex(x) | spyke(x)
+%            beagle(x) | chihuaua(x) | dachshund(x) | poodle(x) | rottweiler(x)
+%            actor(x) | designer(x) | nurse(x) | painter(x) | waiter(x)
+%            cooking(x) | drawing(x) | hiking(x) | jogging(x) | reading(x)
+
+ differentFrom(a,b).
+ differentFrom(a,c).
+ differentFrom(a,d).
+ differentFrom(a,e).
+ differentFrom(b,c).
+ differentFrom(b,d).
+ differentFrom(b,e).
+ differentFrom(c,d).
+ differentFrom(c,e).
+ differentFrom(d,e).
+
+%relatie de simetrie
+ differentFrom(x,y) ->  differentFrom(y,x).
+
+ rightneighbor(a,b).
+ rightneighbor(b,c).
+ rightneighbor(c,d).
+ rightneighbor(d,e).
+ -rightneighbor(a,a).
+ -rightneighbor(a,c).
+ -rightneighbor(a,d).
+ -rightneighbor(a,e).
+ -rightneighbor(b,a).
+ -rightneighbor(b,b).
+ -rightneighbor(b,d).
+ -rightneighbor(b,e).
+ -rightneighbor(c,a).
+ -rightneighbor(c,b).
+ -rightneighbor(c,c).
+ -rightneighbor(c,e).
+ -rightneighbor(d,a).
+ -rightneighbor(d,b).
+ -rightneighbor(d,c).
+ -rightneighbor(d,d).
+ -rightneighbor(e,a).
+ -rightneighbor(e,b).
+ -rightneighbor(e,c).
+ -rightneighbor(e,d).
+ -rightneighbor(e,e).
+
+ rightneighbor(x,y) | rightneighbor(y,x) <-> neighbor(x,y).
+ neighbor(x,y) & neighbor(y,z) -> between(x,y,z). 
+
+% predicatele fiecarui predicat
+
+% culoarea imbracamintei
+ black(x) | white(x) | yellow(x) | blue(x) | red(x).
+% numele stapanului
+ bob(x) | dylan(x) | hank(x) | kevin(x) | ryan(x).
+% numele cainelui
+ apollo(x) | jake(x) | luke(x) | rex(x) | spyke(x).
+% rasa
+ beagle(x) | chihuaua(x) | dachshund(x) | poodle(x) | rottweiler(x).
+% profesia
+ actor(x) | designer(x) | nurse(x) | painter(x) | waiter(x).
+% hobby
+ cooking(x) | drawing(x) | hiking(x) | jogging(x) | reading(x).
+
+% fiecare predicat se aplica unei singure case
+
+ black(x) & black(y) -> -differentFrom(x,y).
+ white(x) & white(y) -> -differentFrom(x,y).
+ yellow(x) & yellow(y) -> -differentFrom(x,y).
+ blue(x) & blue(y) -> -differentFrom(x,y).
+ red(x) & red(y) -> -differentFrom(x,y).
+
+ bob(x) & bob(y) -> -differentFrom(x,y).
+ dylan(x) & dylan(y) -> -differentFrom(x,y).
+ hank(x) & hank(y) -> -differentFrom(x,y).
+ kevin(x) & kevin(y) -> -differentFrom(x,y).
+ ryan(x) & ryan(y) -> -differentFrom(x,y).
+
+ apollo(x) & apollo(y) -> -differentFrom(x,y).
+ jake(x) & jake(y) -> -differentFrom(x,y).
+ luke(x) & luke(y) -> -differentFrom(x,y).
+ rex(x) & rex(y) -> -differentFrom(x,y).
+ spyke(x) & spyke(y) -> -differentFrom(x,y).
+
+ beagle(x) & beagle(y) -> -differentFrom(x,y).
+ chihuaua(x) & chihuaua(y) -> -differentFrom(x,y).
+ dachshund(x) & dachshund(y) -> -differentFrom(x,y).
+ poodle(x) & poodle(y) -> -differentFrom(x,y).
+ rottweiler(x) & rottweiler(y) -> -differentFrom(x,y).
+
+ actor(x) & actor(y) -> -differentFrom(x,y).
+ designer(x) & designer(y) -> -differentFrom(x,y).
+ nurse(x) & nurse(y) -> -differentFrom(x,y).
+ painter(x) & painter(y) -> -differentFrom(x,y).
+ waiter(x) & waiter(y) -> -differentFrom(x,y).
+
+ cooking(x) & cooking(y) -> -differentFrom(x,y).
+ drawing(x) & drawing(y) -> -differentFrom(x,y).
+ hiking(x) & hiking(y) -> -differentFrom(x,y).
+ jogging(x) & jogging(y) -> -differentFrom(x,y).
+ reading(x) & reading(y) -> -differentFrom(x,y).
+
+% Hint-urile
+ rottweiler(a).
+ nurse(x) & hiking(y) -> neighbor(x,y).
+ jogging(a) | jogging(e).
+ dachshund(x) & yellow(y) -> rightneighbor(y,x).
+ rex(d).
+ (black(x) & waiter(y) -> rightneighbor(x,y)) | (waiter(y) & painter(z) -> rightneighbor(y,z)).
+ rex(x) & kevin(y) -> -differentFrom(x,y). 
+ reading(x) & dachshund(y) -> neighbor(x,y).
+ ryan(x) & poodle(y) -> -differentFrom(x,y).
+ (cooking(x) & drawing(y) -> rightneighbor(x,y)) | (drawing(y) & reading(z) -> rightneighbor(y,z)).
+ beagle(a) | beagle(e).
+ hiking(d).
+ bob(x) & actor(y) -> -differentFrom(x,y).
+ apollo(e).
+ chihuaua(x) & dachshund(y) -> neighbor(x,y).
+ blue(d).
+ hank(x) & spyke(y) -> -differentFrom(x,y).
+ red(x) &  dachshund(y) -> neighbor(x,y).
+ (luke(x) & white(y) -> rightneighbor(x,y)) | (white(y) & jogging(z) -> rightneighbor(x,y)).
+ designer(x) & white(y) -> -differentFrom(x,y).
+
+end_of_list.
+
+formulas(goals).
+
+end_of_list.
+

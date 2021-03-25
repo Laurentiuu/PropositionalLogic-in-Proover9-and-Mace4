@@ -1,0 +1,58 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+differentFrom(a,b).
+differentFrom(a,c).
+differentFrom(b,c).
+differentFrom(x,y) ->  differentFrom(y,x).
+
+TheAdventureoftheBrokenTable(x) | TheAdeventureoftheFrozenLake(x) | TheAdventureoftheMovingStatue(x).
+%victime
+JohnBell(x) | SarahDoyle(x) | MarkRobinson(x).
+%faptasi
+JulietLane(x) | CharlotteGreen(x) | PeterWatkins(x).
+%crime comise
+robbery(x) | fraud(x) | murder(x).
+
+TheAdventureoftheBrokenTable(x)& TheAdventureoftheBrokenTable(y) -> -differentFrom(x,y).
+TheAdeventureoftheFrozenLake(x) & TheAdeventureoftheFrozenLake(y) -> -differentFrom(x,y).
+TheAdventureoftheMovingStatue(x) & TheAdventureoftheMovingStatue(y) -> -differentFrom(x,y).
+
+JohnBell(x) & JohnBell(y) -> -differentFrom(x,y).
+SarahDoyle(x) & SarahDoyle(y) -> -differentFrom(x,y).
+MarkRobinson(x) & MarkRobinson(y) -> -differentFrom(x,y).
+
+JulietLane(x) & JulietLane(y) -> -differentFrom(x,y).
+CharlotteGreen(x) & CharlotteGreen(y) -> -differentFrom(x,y).
+PeterWatkins(x) & PeterWatkins(y) -> -differentFrom(x,y).
+
+robbery(x) & robbery(y) -> -differentFrom(x,y).
+fraud(x) & fraud(y) -> -differentFrom(x,y).
+murder(x) & murder(y) -> -differentFrom(x,y).
+
+JulietLane(x) <-> fraud(x).
+
+MarkRobinson(x) <-> TheAdeventureoftheFrozenLake(x).
+MarkRobinson(x) <-> murder(x).
+
+PeterWatkins(x) <-> TheAdventureoftheBrokenTable(x).
+
+fraud(x) <-> TheAdventureoftheMovingStatue(x).
+
+end_of_list.
+
+formulas(goals).
+
+end_of_list.
+
